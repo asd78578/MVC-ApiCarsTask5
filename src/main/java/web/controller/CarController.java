@@ -20,14 +20,10 @@ public class CarController {
         this.carService = carService;
     }
 
-    @GetMapping("/cars")
-    public String showCars(@RequestParam(required = false) Integer count, Model model) {
-        List<Car> cars = (count == null || count >= 5)
-                ? carService.getAllCars()
-                : carService.getCars(count);
 
-        model.addAttribute("cars", cars);
-        model.addAttribute("totalCars", carService.getAllCars().size());
+    @GetMapping("/cars")
+    public String showCars(@RequestParam(required = false) Optional<Integer> count, Model model) {
+        model.addAttribute("cars", carService.getCars(count.orElse(0)));
         return "cars";
     }
 
